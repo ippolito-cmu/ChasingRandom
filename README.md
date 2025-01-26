@@ -2,7 +2,6 @@
 ```
 pip install -r requirements.txt
 ```
-### Description
 
 
 ### Data 

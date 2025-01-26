@@ -1,0 +1,26 @@
+Device Map: 0
+Loading checkpoint shards: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 3/3 [00:03<00:00,  1.00s/it]
+Budget set to: 100
+No Test Set Found. Will be using LIMA.
+/home/hdiddee/research/instruction_distillation/ChasingRandom/src/scripts/../train.py:186: FutureWarning: `tokenizer` is deprecated and removed starting from version 0.16.0 for `SFTTrainer.__init__`. Use `processing_class` instead.
+  trainer = SFTTrainer(
+Traceback (most recent call last):
+  File "/home/hdiddee/research/instruction_distillation/ChasingRandom/src/scripts/../train.py", line 217, in <module>
+    main()
+  File "/home/hdiddee/research/instruction_distillation/ChasingRandom/src/scripts/../train.py", line 186, in main
+    trainer = SFTTrainer(
+              ^^^^^^^^^^^
+  File "/home/hdiddee/environments/test/lib/python3.12/site-packages/transformers/utils/deprecation.py", line 165, in wrapped_func
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+TypeError: SFTTrainer.__init__() got an unexpected keyword argument 'packing'
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "/home/hdiddee/research/instruction_distillation/ChasingRandom/src/scripts/../train.py", line 217, in <module>
+[rank0]:     main()
+[rank0]:   File "/home/hdiddee/research/instruction_distillation/ChasingRandom/src/scripts/../train.py", line 186, in main
+[rank0]:     trainer = SFTTrainer(
+[rank0]:               ^^^^^^^^^^^
+[rank0]:   File "/home/hdiddee/environments/test/lib/python3.12/site-packages/transformers/utils/deprecation.py", line 165, in wrapped_func
+[rank0]:     return func(*args, **kwargs)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^
+[rank0]: TypeError: SFTTrainer.__init__() got an unexpected keyword argument 'packing'

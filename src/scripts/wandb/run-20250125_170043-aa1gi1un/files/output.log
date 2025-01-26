@@ -1,0 +1,57 @@
+Device Map: 0
+The model was loaded with use_flash_attention_2=True, which is deprecated and may be removed in a future release. Please use `attn_implementation="flash_attention_2"` instead.
+Loading checkpoint shards: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 3/3 [02:55<00:00, 58.62s/it]
+Traceback (most recent call last):
+  File "/home/hdiddee/research/instruction_distillation/ChasingRandom/src/scripts/../train.py", line 212, in <module>
+    trainer.save_metrics("train", metrics)
+    ^^^^^^
+  File "/home/hdiddee/research/instruction_distillation/ChasingRandom/src/scripts/../train.py", line 109, in main
+    if args.train_file is not None:
+                  ^^^^^^^^^^^^^^^^^^
+  File "/home/hdiddee/environments/test/lib/python3.12/site-packages/datasets/load.py", line 2606, in load_dataset
+    builder_instance = load_dataset_builder(
+                       ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hdiddee/environments/test/lib/python3.12/site-packages/datasets/load.py", line 2277, in load_dataset_builder
+    dataset_module = dataset_module_factory(
+                     ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hdiddee/environments/test/lib/python3.12/site-packages/datasets/load.py", line 1814, in dataset_module_factory
+    ).get_module()
+      ^^^^^^^^^^^^
+  File "/home/hdiddee/environments/test/lib/python3.12/site-packages/datasets/load.py", line 1149, in get_module
+    data_files = DataFilesDict.from_patterns(
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hdiddee/environments/test/lib/python3.12/site-packages/datasets/data_files.py", line 721, in from_patterns
+    else DataFilesList.from_patterns(
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hdiddee/environments/test/lib/python3.12/site-packages/datasets/data_files.py", line 624, in from_patterns
+    resolve_pattern(
+  File "/home/hdiddee/environments/test/lib/python3.12/site-packages/datasets/data_files.py", line 411, in resolve_pattern
+    raise FileNotFoundError(error_msg)
+FileNotFoundError: Unable to find '/data/user_data/hdiddee/llama_data/budgets//data/user_data/hdiddee/llama_data/budgets/flan_deita_10000.jsonl'
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "/home/hdiddee/research/instruction_distillation/ChasingRandom/src/scripts/../train.py", line 212, in <module>
+[rank0]:     trainer.save_metrics("train", metrics)
+[rank0]:     ^^^^^^
+[rank0]:   File "/home/hdiddee/research/instruction_distillation/ChasingRandom/src/scripts/../train.py", line 109, in main
+[rank0]:     if args.train_file is not None:
+[rank0]:                    ^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/home/hdiddee/environments/test/lib/python3.12/site-packages/datasets/load.py", line 2606, in load_dataset
+[rank0]:     builder_instance = load_dataset_builder(
+[rank0]:                        ^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/home/hdiddee/environments/test/lib/python3.12/site-packages/datasets/load.py", line 2277, in load_dataset_builder
+[rank0]:     dataset_module = dataset_module_factory(
+[rank0]:                      ^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/home/hdiddee/environments/test/lib/python3.12/site-packages/datasets/load.py", line 1814, in dataset_module_factory
+[rank0]:     ).get_module()
+[rank0]:       ^^^^^^^^^^^^
+[rank0]:   File "/home/hdiddee/environments/test/lib/python3.12/site-packages/datasets/load.py", line 1149, in get_module
+[rank0]:     data_files = DataFilesDict.from_patterns(
+[rank0]:                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/home/hdiddee/environments/test/lib/python3.12/site-packages/datasets/data_files.py", line 721, in from_patterns
+[rank0]:     else DataFilesList.from_patterns(
+[rank0]:          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/home/hdiddee/environments/test/lib/python3.12/site-packages/datasets/data_files.py", line 624, in from_patterns
+[rank0]:     resolve_pattern(
+[rank0]:   File "/home/hdiddee/environments/test/lib/python3.12/site-packages/datasets/data_files.py", line 411, in resolve_pattern
+[rank0]:     raise FileNotFoundError(error_msg)
+[rank0]: FileNotFoundError: Unable to find '/data/user_data/hdiddee/llama_data/budgets//data/user_data/hdiddee/llama_data/budgets/flan_deita_10000.jsonl'

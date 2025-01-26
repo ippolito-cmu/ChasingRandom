@@ -1,0 +1,21 @@
+{"time":"2025-01-25T17:05:27.726681228-05:00","level":"INFO","msg":"using version","core version":"0.18.1"}
+{"time":"2025-01-25T17:05:27.726706148-05:00","level":"INFO","msg":"created symlink","path":"/home/hdiddee/research/instruction_distillation/ChasingRandom/src/scripts/wandb/run-20250125_170527-9qgy0fmt/logs/debug-core.log"}
+{"time":"2025-01-25T17:05:27.727134103-05:00","level":"INFO","msg":"using version","core version":"0.18.1"}
+{"time":"2025-01-25T17:05:27.727143793-05:00","level":"INFO","msg":"created symlink","path":"/home/hdiddee/research/instruction_distillation/ChasingRandom/src/scripts/wandb/run-20250125_170527-9qgy0fmt/logs/debug-core.log"}
+{"time":"2025-01-25T17:05:27.730547907-05:00","level":"INFO","msg":"created new stream","id":"9qgy0fmt"}
+{"time":"2025-01-25T17:05:27.730571807-05:00","level":"INFO","msg":"stream: started","id":"9qgy0fmt"}
+{"time":"2025-01-25T17:05:27.730591307-05:00","level":"INFO","msg":"handler: started","stream_id":{"value":"9qgy0fmt"}}
+{"time":"2025-01-25T17:05:27.730660866-05:00","level":"INFO","msg":"writer: Do: started","stream_id":{"value":"9qgy0fmt"}}
+{"time":"2025-01-25T17:05:27.730701816-05:00","level":"INFO","msg":"sender: started","stream_id":{"value":"9qgy0fmt"}}
+{"time":"2025-01-25T17:05:27.987278579-05:00","level":"INFO","msg":"wandb-core","!BADKEY":null}
+{"time":"2025-01-25T17:05:27.989493665-05:00","level":"INFO","msg":"Starting system monitor"}
+{"time":"2025-01-25T17:05:34.663683946-05:00","level":"INFO","msg":"stream: closing","id":"9qgy0fmt"}
+{"time":"2025-01-25T17:05:34.663704326-05:00","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2025-01-25T17:05:34.663852995-05:00","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2025-01-25T17:05:34.74330336-05:00","level":"WARN","msg":"No job ingredients found, not creating job artifact"}
+{"time":"2025-01-25T17:05:34.74331253-05:00","level":"WARN","msg":"No source type found, not creating job artifact"}
+{"time":"2025-01-25T17:05:34.74331617-05:00","level":"INFO","msg":"sender: sendDefer: no job artifact to save"}
+{"time":"2025-01-25T17:05:35.126930303-05:00","level":"INFO","msg":"handler: closed","stream_id":{"value":"9qgy0fmt"}}
+{"time":"2025-01-25T17:05:35.126961523-05:00","level":"INFO","msg":"sender: closed","stream_id":{"value":"9qgy0fmt"}}
+{"time":"2025-01-25T17:05:35.126957093-05:00","level":"INFO","msg":"writer: Close: closed","stream_id":{"value":"9qgy0fmt"}}
+{"time":"2025-01-25T17:05:35.127456697-05:00","level":"INFO","msg":"stream: closed","id":"9qgy0fmt"}

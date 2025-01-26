@@ -1,0 +1,11 @@
+{"time":"2025-01-25T17:19:03.931740543-05:00","level":"INFO","msg":"using version","core version":"0.18.1"}
+{"time":"2025-01-25T17:19:03.931758123-05:00","level":"INFO","msg":"created symlink","path":"/home/hdiddee/research/instruction_distillation/ChasingRandom/src/scripts/wandb/run-20250125_171903-2i4n4kwb/logs/debug-core.log"}
+{"time":"2025-01-25T17:19:03.93200331-05:00","level":"INFO","msg":"using version","core version":"0.18.1"}
+{"time":"2025-01-25T17:19:03.93201317-05:00","level":"INFO","msg":"created symlink","path":"/home/hdiddee/research/instruction_distillation/ChasingRandom/src/scripts/wandb/run-20250125_171903-2i4n4kwb/logs/debug-core.log"}
+{"time":"2025-01-25T17:19:03.967690774-05:00","level":"INFO","msg":"created new stream","id":"2i4n4kwb"}
+{"time":"2025-01-25T17:19:03.967724634-05:00","level":"INFO","msg":"stream: started","id":"2i4n4kwb"}
+{"time":"2025-01-25T17:19:03.967747894-05:00","level":"INFO","msg":"handler: started","stream_id":{"value":"2i4n4kwb"}}
+{"time":"2025-01-25T17:19:03.967814903-05:00","level":"INFO","msg":"writer: Do: started","stream_id":{"value":"2i4n4kwb"}}
+{"time":"2025-01-25T17:19:03.967849763-05:00","level":"INFO","msg":"sender: started","stream_id":{"value":"2i4n4kwb"}}
+{"time":"2025-01-25T17:19:04.170019123-05:00","level":"INFO","msg":"wandb-core","!BADKEY":null}
+{"time":"2025-01-25T17:19:04.171569067-05:00","level":"INFO","msg":"Starting system monitor"}

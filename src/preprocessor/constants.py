@@ -1,0 +1,12 @@
+INPUT_SEQ_LEN = 2056
+TARGET_SEQ_LEN = 512
+RANDOMIZE = True
+QUAL_SAMPLES = 5 
+template_type = 'zs_opt'
+FORCED_PERTURBATION_INSTRUCTIONS = ['wiki_dialog', 'para_crawl', 'translate', 'natural_instructions']
+LIMA_HF_NAME = 'GAIR/lima'
+TULU_HF_NAME = 'allenai/tulu-v2-sft-mixture'
+ALPACA_HF_NAME = 'yahma/alpaca-cleaned'
+EVOL_HF_NAME = 'MaziyarPanahi/WizardLM_evol_instruct_V2_196k'
+DOLLY_HF_NAME = 'databricks/databricks-dolly-15k'
+LLAMA2_HF = '/data/models/huggingface/meta-llama/Llama-2-7b-chat-hf'

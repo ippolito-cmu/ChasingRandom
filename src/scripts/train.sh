@@ -1,4 +1,4 @@
-BUDGET_ROOT="/data/user_data/hdiddee/llama_data/budgets/" 
+BUDGET_ROOT="../sample_data/" 
 ROOT="/scratch/"
 STRATEGIES=("deita"
             "cherry"

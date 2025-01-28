@@ -2,7 +2,7 @@ import os
 import json
 from datasets import load_dataset 
 from constants import DOLLY_HF_NAME, EVOL_HF_NAME, ALPACA_HF_NAME
-
+import argparse
 def dump_data(instructions, inputs, targets, dataset, path):
     dump = []
     if len(instructions) == 0:
@@ -28,7 +28,8 @@ def make_evol_196k(write_root):
     dump_data([], inputs, targets, 'evol', write_root)
 
 
-def make_flan(FLAN_PROCESSED_DATA, write_root):
+def make_flan(write_root,
+              FLAN_PROCESSED_DATA='../sample_data/temp.jsonl'):
     with open(FLAN_PROCESSED_DATA,'r') as file:
         records = file.read().strip().split('\n')
         inputs = [json.loads(record)['input'] for record in records]
@@ -38,6 +39,7 @@ def make_flan(FLAN_PROCESSED_DATA, write_root):
 
 def make_alpaca(write_root):
     train_dataset = load_dataset(ALPACA_HF_NAME)['train']
+
     instructions = [ex['instruction'] for ex in train_dataset]
     inputs = [ex['input'] for ex in train_dataset]
     targets = [ex['output'] for ex in train_dataset]
@@ -45,10 +47,13 @@ def make_alpaca(write_root):
 
 
 if __name__ == '__main__':
-    write_root = input('path where converted data is to be stored \n')
-    make_dolly(write_root)
-    make_alpaca(write_root)
-    make_evol_196k(write_root)
-    make_flan(FLAN_PROCESSED_DATA = '../sample_data', write_root) # path to FLAN-type data 
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--write_root', type=str, required=True)
+    args = parser.parse_args()    
+    make_dolly(args.write_root)
+    make_alpaca(args.write_root)
+    make_evol_196k(args.write_root)
+    make_flan(args.write_root,
+              FLAN_PROCESSED_DATA = '../sample_data') # path to FLAN-type data 
 
     

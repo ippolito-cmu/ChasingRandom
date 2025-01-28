@@ -18,27 +18,27 @@ if __name__ == '__main__':
     if args.preprocessing:
         files = os.listdir(args.root)
         for file in files: 
-                    dataset = file.split('_')[0]
-                    print(f'Converting into Deita Format for {dataset}')
-                    with open(os.path.join(args.root,file), 'r') as read_file: 
-                        records = read_file.read().strip().split('\n')
-                        try: 
-                            human_instructions = [json.loads(record)['input'] for record in records]
-                            bot_responses = [json.loads(record)['target'] for record in records]
-                        except: 
-                            human_instructions = [json.loads(record)['task']['input'] for record in records]
-                            bot_responses = [json.loads(record)['task']['target'] for record in records]
-                    converted_records = [[{'from': 'human', 'value': human}, 
-                                          {'from':"gpt",'value':bot}] 
-                                          for human, bot in zip(human_instructions, bot_responses)] #this assignment to "gpt" is only done for compatibility with the training pipeline
                     try: 
+                        dataset = file.split('_')[0]
+                        print(f'Converting into Deita Format for {dataset}')
+                        with open(os.path.join(args.root,file), 'r') as read_file: 
+                            records = read_file.read().strip().split('\n')
+                            try: 
+                                human_instructions = [json.loads(record)['input'] for record in records]
+                                bot_responses = [json.loads(record)['target'] for record in records]
+                            except: 
+                                human_instructions = [json.loads(record)['task']['input'] for record in records]
+                                bot_responses = [json.loads(record)['task']['target'] for record in records]
+                        converted_records = [[{'from': 'human', 'value': human}, 
+                                                {'from':"gpt",'value':bot}] 
+                                                for human, bot in zip(human_instructions, bot_responses)] #this assignment to "gpt" is only done for compatibility with the training pipeline
+                    
                         sampled_converted_records = random.sample(converted_records, min(args.max_budget, len(converted_records)))
                         with open(os.path.join(args.root,f'deita_{dataset}.jsonl'),'w') as write_file:
                             for record in sampled_converted_records: 
                                 write_file.write(json.dumps({'conversations':record}) + '\n')  
                     except: 
-                        print(f'{len(sampled_converted_records)} for {file}')
-                        print(f'Underflow for {file}')
+                      print(f'Failed for {file}')
 
     if args.training:
         files = os.listdir(args.root)

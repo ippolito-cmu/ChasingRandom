@@ -22,8 +22,7 @@ def model_formatter(prompts, model_identifier, system_instruction=SYSTEM_INSTRUC
         print('WARNING: Model identifier did not have parent identifier. Defaulting to LLaMa')
         return [f"{system_instruction} \n ### Instruction: {prompt} \n ### Response:" for prompt in prompts]
 
-
-def openllm_summary_compiler(inference_root='../results', compiled_result_root='../compiled_results'):
+def eval_harness_summary_compiler(inference_root='../results', compiled_result_root='../compiled_results'):
     '''Reads the Eval Harness outputs (json outputs generated through inference) and compiles them into readable csvs for analysis and visualization.'''
     if not os.exists(compiled_result_root):
         os.mkdir(compiled_results)
@@ -65,7 +64,7 @@ def check_repeat(identifier, output_dir, benchmark):
     if file_identifier in files or f'{benchmark}_{identifier}.jsonl' in files:
         return -1
     return 0
-    
+
 def dump_infobench_predictions(dataset, predictions, identifier):
     with open(f'{identifier}.json', 'w') as write_file:
         for dataset_item, prediction in zip(dataset, predictions):

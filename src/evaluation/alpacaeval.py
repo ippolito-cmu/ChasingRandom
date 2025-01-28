@@ -4,7 +4,17 @@ import json
 import re
 import random
 import argparse
-from utils import dump_alpacaeval_predictions
+
+def dump_alpacaeval_predictions(prompts, model_responses, path, model_identifier):
+    """Dumps the evaluating model's inferences in the required format specified here https://github.com/tatsu-lab/alpaca_eval.
+    This is also our default output format for other benchmarks except IFEval (which has a custom format)"""
+    dump = []
+    dataset = model_identifier.split('_')[0]
+    for prompt, model_response in zip(prompts, model_responses):
+        dump.append({"instruction": prompt, "output": model_response, "generator": model_identifier, "dataset":dataset, "datasplit":'test'})
+    
+    with open(path + '.json', 'w') as file:
+        json.dump(dump, file, indent=4) 
 
 def parse_alpacaeval_outputs(file_path,args):
     with open(os.path.join(args.inference_root,file_path),'r') as file: 
@@ -28,9 +38,9 @@ if __name__ == '__main__':
     files = os.listdir(args.inference_root)
 
     leaderboard_objects, reference_leaderboard_objects = [],[]
-    if not os.exists(args.reference_root):
+    if not os.path.exists(args.reference_root):
         os.mkdir(args.reference_root)
-    if not os.exists(args.leaderboard_path):
+    if not os.path.exists(args.leaderboard_path):
         os.mkdir(args.leaderboard_path)
 
 

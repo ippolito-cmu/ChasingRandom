@@ -2,6 +2,16 @@
 
 Official Code for [Chasing Random: Instruction Selection Strategies Fail To Generalize](https://arxiv.org/abs/2410.15225). 
 
+# Table of Contents
+- [Environment](#environment)
+- [Data Format and Selected Subsets](#data)
+- [Finetuning Instructions](#fine-tuning)
+- [Inference](#inference)
+  - [With vLLM](#with-vllm)
+  - [Without vLLM](#without-vllm)
+  - [Benchmark Specific Details](#Benchmark-Specific-Details)
+- [Citations](#citations)
+
 ### Environment
 requirements.txt contains the finetuning and data selection strategy installation setup. vllm_requirements.txt contains the vLLM installation requisites. OpenAI Key's has to be set for AlpacaEval's computation. 
 ```
@@ -25,21 +35,13 @@ The main finetuning script train.py excepts the data to be formatted in the foll
 {"input":<instruction (including any input context)>, "target":<target>}
 ```
 
-### Fine-Tuning Instructions 
+### Fine-Tuning
 Run accelerate config setting with the available number of available GPUs. Edit the __src/scripts/train.sh__ --num_processes parameter to the same value. The hyperparameters in train.sh correspond to a 8-GPU setup so edit the hyperparameters accordingly if --num_processess != 8. 
 ```
 accelerate config 
 bash train.sh 
 ```
 
-### Inference
-- *With VLLM*: By default - we use VLLM for faster inference. We provide a separate __vllm_requirements.txt__ should you choose to run inference using VLLM. The current requirements.txt includes its installation and you can see __inference.sh__ for example usage.
-
-- *Without VLLM*: If you prefer not using VLLM - you can refer to the __batch_process()__ function in the utils to run inference while only leveraging accelerate. For Eval Harness evaluations, you can refer to /additional/__openllm_simple_evaluate.py__ which leverages 4-bit quantized model inferencing with simple_evaluate for Eval Harness evaluations.
-
-```
-bash inference.sh 
-```
 
 ### Selection Strategies 
 - *Alpacasus*: Run sampler.py to create initial pool of samples to be scored. Then run scorer.py to score the pool of samples; Finally run the scorer.py with pruning_budget to prune according to the subsampled budget. 
@@ -88,6 +90,22 @@ python deita_selection.py --threshold 0.9
 
 
 
+### Evaluation 
+inference.py loads all the evaluation benchmarks used in the paper. By default - we use VLLM for faster inference and you can choose whichever variant based on the description below: 
+- *With VLLM*:  We provide a separate __vllm_requirements.txt__ should you choose to run inference using VLLM. The current requirements.txt includes its installation and you can see __inference.sh__ for example usage.
+
+- *Without VLLM*: If you prefer not using VLLM - you can refer to the __batch_process()__ function in the utils to run inference while only leveraging accelerate. For Eval Harness evaluations, you can refer to __openllm_simple_evaluate.py__ which leverages 4-bit quantized model inferencing with simple_evaluate for Eval Harness evaluations.
+
+- *Benchmark Specific Details* 
+  - *AlpacaEval*: You can use /evaluation/alpacaeval.py to create the random-baselines for AlpacaEval computation. This will also write the exact command to run for generating the alpacaeval leaderboards for each comparison. 
+  - *IFEval*: You can use /evaluation/ifeval.py to compute IFEval scores using the inferences generated for ifeval. 
+  - *Eval Harness*: You can use eval_harness_summary_compiler() in ./utils.py to parse all the results from Eval Harness inference into csv's for analysis. 
+```
+[Instruction Following Benchmarks] bash inference.sh 
+
+[Eval Harness Evaluation] accelerate launch -m lm_eval --model hf --model_args pretrained=/data/user_data/hdiddee/llama_models/llama_checkpoint/,max_length=2048,dtype=auto --tasks arc_challenge,hellaswag,arc_easy,truthfulqa_mc1,truthfulqa_mc2,winogrande,mmlu  --batch_size auto --output_path ../results
+```
+
 ### Citations 
 - If you found our code and/or paper useful, please consider citing our work
 ```
@@ -126,7 +144,7 @@ python deita_selection.py --threshold 0.9
     pages = "7595--7628",
 }
 ```
-- code for deita data selection was sourced from the official open source repository. 
+- Code for deita data selection was sourced from the official open source repository. 
 ```
 @inproceedings{
 liu2024what,

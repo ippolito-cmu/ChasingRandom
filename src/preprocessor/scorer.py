@@ -9,16 +9,8 @@ import time
 from openai import OpenAI
 import os
 
-
-datasets = ['lima', 'alpaca', 'evol', 'flan', 'dolly'] 
 client = OpenAI()
 openai.api_key = os.getenv('OPENAI_API_KEY')
-
-def run_command(dataset_name, root, identifier, budget):
-    command = f"python random_long_sampler.py --root {root} --{dataset_name} --budget {budget} --identifier {identifier}"
-    with subprocess.Popen(command,stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, shell=True) as proc:
-        for line in proc.stdout:
-            print(line, end='')
 
 def recovery_dump(inputs, targets, scores, dataset,args):
     sorted_tuples = sorted([(input, target, score) for input, target, score in zip(inputs, targets, scores)], key= lambda x:x[2], reverse = True)
@@ -32,7 +24,7 @@ def invoke_gpt_scoring(messages, inputs, targets, dataset, args):
     responses, scores = [], []
     for message in tqdm.tqdm(messages): 
         try:
-            response = client.chat.completions.create(model = "gpt-3.5-turbo", messages = message, max_tokens = 3)
+            response = client.chat.completions.create(model = "gpt-4o", messages = message, max_tokens = 3)
             sleep(0.005)
         except openai.AuthenticationError:
             print("Failed to authenticate. Check your API key.")
@@ -83,43 +75,39 @@ def extract_score(response):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--root',type=str, default='/data/user_data/hdiddee/alpacasus/')
+    parser.add_argument('--root',type=str, default='../sample_data/temp/', help='path to where full dataset is stored. This is also where the scored samples for the entire dataset will be stored. ')
     parser.add_argument('--budget',type=int, default=40000, help='the number of samples that are originally scored (typically a large subset (>50%) of the original dataset)')
     parser.add_argument('--prune', action='store_true', default=False, help='if scored samples need to be pruned.')
     parser.add_argument('--pruning_budget',type=int, default=10000, help='used for pruning the ranked samples according to the number of samples need (1000, 5000, 10000 for our experiment)')
     args = parser.parse_args()
 
-    for dataset in datasets:
+    datasets = os.listdir(args.root)
 
-        if args.pruning:
-            identifier = f'{dataset}_alpacasus_{args.pruning_budget}'
-        
-            with open(os.path.join(args.root, f'{dataset}_unpruned_alpacasus.jsonl'), 'r') as read_file:
-                records = read_file.read().strip().split('\n')
-                print(len(records))
-                dump_objs = []
-                for record in records: 
-                    if json.loads(record)['score'] >= 4: 
-                        dump_objs.append({'input': json.loads(record)['input'], 'target': json.loads(record)['target'], 'score': json.loads(record)['score']})
-                print(f'{len(dump_objs)} number of eligible records!')
-        
-        
-            with open(os.path.join(os.path.join(args.root,f'{identifier}.jsonl')), 'w') as write_file: 
-                    for obj in dump_objs[:args.pruning_budget]:
-                        write_file.write(json.dumps(obj, ensure_ascii=False) + '\n')
+    for dataset in datasets:
+        if args.prune:
+            try: 
+                identifier = dataset.replace('_unpruned',f'_{args.pruning_budget}')
+                with open(os.path.join(args.root, dataset), 'r') as read_file:
+                    records = read_file.read().strip().split('\n')
+                    print(len(records))
+                    dump_objs = []
+                    for record in records: 
+                        if json.loads(record)['score'] >= 4: 
+                            dump_objs.append({'input': json.loads(record)['input'], 'target': json.loads(record)['target'], 'score': json.loads(record)['score']})
+                    print(f'{len(dump_objs)} number of eligible records!')
+            
+            
+                with open(os.path.join(os.path.join(args.root,f'{identifier}')), 'w') as write_file: 
+                        for obj in dump_objs[:args.pruning_budget]:
+                            write_file.write(json.dumps(obj, ensure_ascii=False) + '\n')
+            except: 
+                print(f'Failed for File: {dataset}')
         else:             
             print(f'Scoring {args.budget} random samples from {dataset}')
-            if dataset  != 'flan':
-                print('For every dataset other than FLAN, we use the HUB. For FLAN, a seqio-enabled pipeline generated full test has to be passed.')
-                identifier = f'{dataset}_alpacasus'
-                run_command(dataset, args.root, identifier, args.budget)
-            else: 
-                identifier = dataset 
-                print('Reading FLAN-Type dataset from seqio-preprocessed pipeline.')
             # from random_long_sampler.py - the file name is {dataset}.json in the root folder
-            with open(os.path.join(args.root, f'{identifier}.jsonl'), 'r') as file:
+            with open(os.path.join(args.root, dataset), 'r') as file:
                 records = file.read().strip().split('\n')
-                print(f'Read record from {identifier}.jsonl')
+                print(f'Read record from {dataset}')
 
             inputs = [json.loads(record)['input'] for record in records]
             targets = [json.loads(record)['target'] for record in records]
@@ -127,11 +115,12 @@ if __name__ == '__main__':
             messages = make_review_messages(inputs, targets)[:args.budget]
             print(f'{len(messages)} samples will be scored.')
             start_time = time.time()
-            explainations, scores = invoke_gpt_scoring(messages, inputs, targets, dataset)
+            explainations, scores = invoke_gpt_scoring(messages, inputs, targets, dataset, args)
             end_time = time.time()
             print(f'{(end_time -start_time)/60} minutes ...')
             sorted_tuples = sorted([(input, target, score) for input, target, score in zip(inputs, targets, scores)], key= lambda x:x[2], reverse = True)
-            with open(os.path.join(args.root, f'{dataset}_unpruned_alpacasus.jsonl'), 'w') as write_file:
+            identifier = dataset.replace('.jsonl','')
+            with open(os.path.join(args.root, f'{identifier}_alpacasus_unpruned.jsonl'), 'w') as write_file:
                 for tuple in sorted_tuples:
                     obj = {"input": tuple[0], "target": tuple[1], "score": tuple[2]}
                     write_file.write(json.dumps(obj, ensure_ascii=False) + '\n')

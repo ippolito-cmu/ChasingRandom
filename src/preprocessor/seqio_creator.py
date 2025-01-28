@@ -3,44 +3,19 @@ from random import randint
 import argparse 
 import re 
 import tensorflow as tf
-from flan.v2 import (
+from FLAN.flan.v2 import (
     task_configs, 
     templates, 
     utils, 
     constants, 
     preprocessors
     )
-import pdb
-import random
+
 import json
 import functools
 import logging 
 import os
 from constants import INPUT_SEQ_LEN, TARGET_SEQ_LEN, QUAL_SAMPLES, template_type
-
-
-
-def create_validation_sets(TASK_POOL, root):
-    for t_name, config in task_configs.ALL_CANDIDATE_TASK_CONFIGS.items():
-        if t_name in TASK_POOL:
-            flan_pattern_name = utils.t_name_to_flan_pattern_name(t_name)
-            patterns_list = templates.PATTERNS[flan_pattern_name]
-            selected_patterns = patterns_list[0:1]
-            # MAX_SAMPLES is made 500 to avoid making the validation set too bulky
-            try: 
-                register_task(f'valid_{t_name}', config, selected_patterns, template_type='zs_opt', max_samples=50, root=root, split='test')
-                print(f'Routed Test data for {t_name}')
-            except:
-                try: 
-                    logging.info('Could not find Test Dataset for task. Retrying for a Validation Split')
-                    register_task(f'valid_{t_name}', config, selected_patterns, template_type='zs_opt', max_samples=50, root=root, split='validation')
-                    print(f'Routed Validation data for {t_name}')
-                except: 
-                    logging.info('FATAL: Could not find validation or test data so creating a train-split test set.')
-                    register_task(f'valid_{t_name}', config, selected_patterns, template_type='zs_opt', max_samples=50, root=root, split='train')
-                    print(f'Routed Validation (Taken from Train) data for {t_name}')
-    return CURRENT_TASK_POOL
-
 
 def qual_eval_dump(dump, root):
     with open(f'{root}/qualitative_eval.jsonl', 'a') as batch_file: 
@@ -76,14 +51,6 @@ def dump_data(task: str,
         for item in dump:
             f.write(json.dumps(item, ensure_ascii=False) + '\n')
 
-    # Making task-specific validation sets as well
-    if original_identifier == 'validation' or original_identifier == 'test': #Making separate test/validation sets to compute task-wise performance hit of randomization
-        task_based_identifier = f'{root}/{task}_validation.jsonl'
-        with open(task_based_identifier, 'a') as f:
-            for item in dump:
-                f.write(json.dumps(item, ensure_ascii=False) + '\n')
-    
-    logging.info(f'Finished logging for {task}')
 
 def create_data(task: str,
                 dataset: tf.data.Dataset,
@@ -144,8 +111,7 @@ def register_task(task : str,
 def registers_task_mixture(task_pool: str, 
                            max_samples: int, 
                            root: str, 
-                           identifier: str,
-                           randomize_instruction: bool):
+                           identifier: str):
     current_task_count, current_task_pool = 0, []
     for t_name, config in task_configs.ALL_CANDIDATE_TASK_CONFIGS.items():
         if t_name in task_pool:
@@ -198,6 +164,6 @@ if __name__ == '__main__':
     logging.info('Begining Gold Data Construction!')
     RANDOMIZE = False # To reinitialize the state of the identifier (Used for creating the Gold Dataset)
     CURRENT_TASK_POOL = list(task for task, _ in task_configs.ALL_CANDIDATE_TASK_CONFIGS.items())
-    CURRENT_TASK_COUNT, CURRENT_TASK_POOL = registers_task_mixture(CURRENT_TASK_POOL, args.max_samples, args.root, identifier= 'train', randomize_instruction=False) 
+    CURRENT_TASK_COUNT, CURRENT_TASK_POOL = registers_task_mixture(CURRENT_TASK_POOL, args.max_samples, args.root, identifier= 'train') 
     logging.info(f'{CURRENT_TASK_COUNT} gold task datasets have been created and the task list is {CURRENT_TASK_POOL}.')
   

@@ -8,27 +8,6 @@ from constants import (LIMA_HF_NAME,
 import json
 skip_datasets = ['lima', 'wizardlm', 'gpt4_alpaca']
 
-def make_flan(identifier, args):
-    print('Caution: This is a pre-packed version of the dataset. Use the FLAN specific dataset_creator.py to create a non-packed version!!!!')
-    if identifier is None: 
-        identifier = 'flan'
-    train_dataset = load_dataset(TULU_HF_NAME)['train']
-    train_dataset = train_dataset.shuffle(seed=args.seed)
-    train_dataset = train_dataset.filter(lambda example: example['dataset'] == 'flan_v2')
-    
-    print(f'After filtering {len(train_dataset)} samples remain.')
-    if args.length_sorted: 
-        if identifier is None:
-            identifier = 'flan_longest'
-        train_dataset = train_dataset.add_column('target_len',[len(example['messages'][1]['content']) for example in train_dataset])
-        train_dataset = train_dataset.sort('target_len', reverse = True) #longest to short
-
-                                                                    
-    train_dataset = train_dataset.select(range(min(args.budget, len(train_dataset))))
-    inputs = [ex[0]['content'] for ex in train_dataset['messages']]
-    targets = [ex[1]['content'] for ex in train_dataset['messages']]
-
-    dump_samples(inputs, targets, args.root,identifier)
 
 def make_tulu(identifier, args):
     if identifier is None: 
@@ -125,7 +104,6 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--root', type = str, default='./')
     parser.add_argument('--lima', action='store_true', default=False)
-    parser.add_argument('--flan', action='store_true',default=False)
     parser.add_argument('--dolly', action = 'store_true', default = False)
     parser.add_argument('--tulu', action='store_true',default=False)
     parser.add_argument('--alpaca', action='store_true',default=False)
@@ -143,9 +121,6 @@ if __name__ == '__main__':
         print(f'Running for budget {args.budget}')
     if args.lima:
         make_lima(identifier, args)
-                    
-    if args.flan:
-        make_flan(identifier,args)
 
     if args.dolly: 
         make_dolly(identifier, args)

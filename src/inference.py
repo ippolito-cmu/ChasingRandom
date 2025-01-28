@@ -1,6 +1,6 @@
 from vllm import LLM, SamplingParams 
 from datasets import load_dataset
-from utils import (model_wise_formatter,
+from utils import (model_formatter,
                    dump_iffeval_predictions)
 import torch
 import os
@@ -41,16 +41,14 @@ def load_model(args):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument("--model_path", type=str, default=None)
+    parser.add_argument("--model_path", type=str, default='/data/user_data/hdiddee/llama_models/llama_checkpoint/')
     parser.add_argument("--model_type", type=str, help='Required to format the prompts in accordance with the model class.')
     parser.add_argument("--output_path", type=str, default = '../results')
     parser.add_argument("--max_samples", type = int, default = None)
     parser.add_argument("--benchmarks", nargs='+', choices=['lima', 'alpacaeval','ifeval','infobench'],
                         help="List of benchmarks to run. Possible choices: ifeval, infobench, lima, alpacaeval")
     parser.add_argument("--eval_harness", action='store_true', default=False, help='if openLLM evaluations are to be conducted, needs to be passed')
-    parser.add_argument("--tasks", nargs='+', 
-                        default=['arc_challenge','hellaswag','arc_easy','truthfulqa_mc1','truthfulqa_mc2','winogrande','mmlu']
-                        help='the openLLM tasks you want to run inference for')
+    parser.add_argument("--tasks", nargs='+', default=['arc_challenge','hellaswag','arc_easy','truthfulqa_mc1','truthfulqa_mc2','winogrande','mmlu'], help='the openLLM tasks you want to run inference for')
 
     args = parser.parse_args()
     model_identifier = args.model_path.split('/')[-1]
@@ -74,7 +72,7 @@ if __name__ == '__main__':
                 inputs = [record for record in dataset['conversations']]
 
                 
-            test_inputs = model_wise_formatter(inputs, args.model_type)
+            test_inputs = model_formatter(inputs, args.model_type)
             outputs = inference(test_inputs, model, sampling_params)
             if not os.path.exists(os.path.join(args.output_path,benchmark)):
                 os.makedirs(os.path.join(args.output_path,benchmark))
@@ -83,7 +81,7 @@ if __name__ == '__main__':
 
             if benchmark == 'ifeval':
                 inputs = load_dataset('google/IFEval')['train']['prompt']            
-                test_inputs = model_wise_formatter(inputs, args.model_type)
+                test_inputs = model_formatter(inputs, args.model_type)
                 outputs = inference(test_inputs, model, sampling_params)
                 if not os.path.exists(os.path.join(args.output_path,benchmark)):
                     os.makedirs(os.path.join(args.output_path,benchmark))
@@ -91,10 +89,10 @@ if __name__ == '__main__':
                 dump_iffeval_predictions(inputs, outputs, os.path.join(args.output_path,benchmark, model_identifier))
 
     else: 
-        print('Running Inference for OpenLLM Benchmark')
+        print('Logging Inference Command for OpenLLM Benchmark')
         command =  make_command(args.model_path, ','.join(args.tasks), args.output_path)
         print(command)
-        subprocess.run(command)
+        
 
                 
 

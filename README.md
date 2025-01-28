@@ -6,6 +6,7 @@ Official Code for [Chasing Random: Instruction Selection Strategies Fail To Gene
 - [Environment](#environment)
 - [Data Format and Selected Subsets](#data)
 - [Finetuning Instructions](#fine-tuning)
+- [Selection Strategies](#selection-strategies)
 - [Inference](#inference)
   - [With vLLM](#with-vllm)
   - [Without vLLM](#without-vllm)

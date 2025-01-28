@@ -7,7 +7,7 @@ Official Code for [Chasing Random: Instruction Selection Strategies Fail To Gene
 - [Data Format and Selected Subsets](#data)
 - [Finetuning Instructions](#fine-tuning)
 - [Selection Strategies](#selection-strategies)
-- [Inference](#inference)
+- [Evaluation](#evaluation)
   - [With vLLM](#with-vllm)
   - [Without vLLM](#without-vllm)
   - [Benchmark Specific Details](#Benchmark-Specific-Details)
@@ -88,8 +88,6 @@ python deita_selection.py --threshold 0.9
 
 ```
 ```Files of interest: deita_selection.py, deita_data_converter.py```
-
-
 
 ### Evaluation 
 inference.py loads all the evaluation benchmarks used in the paper. By default - we use VLLM for faster inference and you can choose whichever variant based on the description below: 

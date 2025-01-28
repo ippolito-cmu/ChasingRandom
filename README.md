@@ -47,6 +47,7 @@ bash train.sh
 ### Selection Strategies 
 - *Alpacasus*: Run sampler.py to create initial pool of samples to be scored. Then run scorer.py to score the pool of samples; Finally run the scorer.py with pruning_budget to prune according to the subsampled budget. 
 ```
+python sampler.py --root ../sample_data/temp/ --budget 10 --identifier temp 
 python scorer.py --budget 5 
 python scorer.py --prune --pruning_budget 10
 ```
@@ -56,7 +57,7 @@ python scorer.py --prune --pruning_budget 10
 ```
 python sampler.py --root ../sample_data/temp/ --dolly --length_sorted --budget 10 --identifier temp 
 ```
-```Files of interest: sampler.py, scorer.py```
+```Files of interest: sampler.py```
 
 
 - *Cherry*: We use the code opensourced by the authors listed [here](https://github.com/tianyi-lab/Cherry_LLM/blob/main/cherry_seletion/data_analysis.py).  You can use __cherry_data_converter.py__ to convert our data into the format required by the CherryLM training scripts (You will have to supply the path to your preprocessed FLAN dataset as we load that locally. Set this to flan_full.jsonl from data.zip if you're not using a custom FLAN dataset). Use __cherry.sh__ to run all the steps (training the pre-experienced model, clustering, scoring the samples for IFD and finally selecting samples.)

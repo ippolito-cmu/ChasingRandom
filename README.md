@@ -4,16 +4,15 @@
   Official Code for <a href="https://arxiv.org/abs/2410.15225">Chasing Random: Instruction Selection Strategies Fail To Generalize</a>.
 </p>
 
-<h2 align="center">Abstract</h2>
+[A large body of work](https://arxiv.org/abs/2408.02085) has trained competitive models cost-effectively using only a fraction of high-quality instructions from existing datasets. In this work, we analyze popular selection strategies across different source datasets, selection budgets and evaluation benchmarks to demonstrate that gains through data selection generalize poorly -- often failing to consistently outperform _even random baselines_. Through an analysis of the cost expended in selection, we also conclude that data selection strategies can often exceed the cost of fine-tuning on the full dataset, yielding _only marginal—and sometimes no gains_ compared to tuning on the full dataset or a random subset.
 
 <div align="center">
-  <img src="./assets/teaser.png" alt="finetuning-cost" style="width:80%; max-width:600px;">
+  <img src="./assets/teaser.png" alt="finetuning-cost" style="width:60%; max-width:500px;">
   <br>
   <em>Figure 1: Random baselines are competitive with minimal cost. Best strategies vary significantly by setup (*indicates best strategy).</em>
 </div>
 
 
-[A large body of work](https://arxiv.org/abs/2408.02085) has trained competitive models cost-effectively using only a fraction of high-quality instructions from existing datasets. In this work, we analyze popular selection strategies across different source datasets, selection budgets and evaluation benchmarks to demonstrate that gains through data selection generalize poorly -- often failing to consistently outperform _even random baselines_. Through an analysis of the cost expended in selection, we also conclude that data selection strategies can often exceed the cost of fine-tuning on the full dataset, yielding _only marginal—and sometimes no gains_ compared to tuning on the full dataset or a random subset.
 
 
 

@@ -124,18 +124,25 @@ python deita_selection.py --threshold 0.9
 
 ### Evaluation 
 inference.py loads all the evaluation benchmarks used in the paper. By default - we use VLLM for faster inference and you can choose whichever variant based on the description below: 
-- *With VLLM*:  We provide a separate __vllm_requirements.txt__ should you choose to run inference using VLLM. The current requirements.txt includes its installation and you can see __inference.sh__ for example usage.
+#### *With VLLM*  
+We provide a separate __vllm_requirements.txt__ should you choose to run inference using VLLM. The current requirements.txt includes its installation and you can see __inference.sh__ for example usage.
 
-- *Without VLLM*: If you prefer not using VLLM - you can refer to the __batch_process()__ function in the utils to run inference while only leveraging accelerate. For Eval Harness evaluations, you can refer to __openllm_simple_evaluate.py__ which leverages 4-bit quantized model inferencing with simple_evaluate for Eval Harness evaluations.
+#### *Without VLLM*
+If you prefer not using VLLM - you can refer to the __batch_process()__ function in the utils to run inference while only leveraging accelerate. For Eval Harness evaluations, you can refer to __openllm_simple_evaluate.py__ which leverages 4-bit quantized model inferencing with simple_evaluate for Eval Harness evaluations.
 
-- *Benchmark Specific Details* 
+
+#### *Benchmark Specific Details* 
   - *AlpacaEval*: You can use /evaluation/alpacaeval.py to create the random-baselines for AlpacaEval computation. This will also write the exact command to run for generating the alpacaeval leaderboards for each comparison. 
   - *IFEval*: You can use /evaluation/ifeval.py to compute IFEval scores using the inferences generated for ifeval. 
   - *Eval Harness*: You can use eval_harness_summary_compiler() in ./utils.py to parse all the results from Eval Harness inference into csv's for analysis. 
 ```
-[Instruction Following Benchmarks] bash inference.sh 
+bash inference.sh 
 
-[Eval Harness Evaluation] accelerate launch -m lm_eval --model hf --model_args pretrained=/data/user_data/hdiddee/llama_models/llama_checkpoint/,max_length=2048,dtype=auto --tasks arc_challenge,hellaswag,arc_easy,truthfulqa_mc1,truthfulqa_mc2,winogrande,mmlu  --batch_size auto --output_path ../results
+accelerate launch -m lm_eval --model hf \
+--model_args pretrained=<path to llama checkpoint>,max_length=2048,dtype=auto \
+--tasks arc_challenge,hellaswag,arc_easy,truthfulqa_mc1,truthfulqa_mc2,winogrande,mmlu  \
+--batch_size auto \
+--output_path ../results
 ```
 
 ### Citations 

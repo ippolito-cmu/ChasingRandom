@@ -1,6 +1,15 @@
 ### Introduction
 
 Official Code for [Chasing Random: Instruction Selection Strategies Fail To Generalize](https://arxiv.org/abs/2410.15225). 
+#### Abstract
+
+[A large body of work](https://arxiv.org/abs/2408.02085) has trained competitive models cost-effectively using only a fraction of high-quality instructions from existing datasets. In this work, we analyze popular selection strategies across different source datasets, selection budgets and evaluation benchmarks to demonstrate that gains through data selection generalize poorly -- often failing to consistently outperform _even random baselines_. Through an analysis of the cost expended in selection, we also conclude that data selection strategies can often exceed the cost of fine-tuning on the full dataset, yielding _only marginal—and sometimes no gains_ compared to tuning on the full dataset or a random subset.
+
+<p align="center">
+  <img src="./assets/teaser.png" alt="finetuning-cost">
+</p>
+
+
 
 # Table of Contents
 - [Environment](#environment)
@@ -69,14 +78,18 @@ cd scripts
 bash cherry.sh
 ```
 ```Files of interest: cherry_data_converter.py, cherry.sh```
+*Please refer to the description of each argument [here](https://github.com/tianyi-lab/Cherry_LLM/blob/main/cherry_seletion/data_analysis.py) to overwrite temporary paths in the script.* 
+
 
 - *DEITA*: We directly use the code opensourced by the authors listed [here](https://github.com/hkust-nlp/deita); To convert data into the sharegpt format you can use __preprocessor/data_data_converter.py__. This file has 2 flags:
 - --preprocessing: This is used for converting the original datasets into shareGPT format 
 - --training: This is used for filtering the deita-scored data in accordance with whatever your sampling budget may be (default is 10000). 
 
 This file will also give you a warning if your deita-scored samples are not enough to subsample for the budget of your choice. If you encounter an underflow, we recommend trying a lower value of __--threshold__ in __deita_selection.py__ (default for us is 0.9). The __deita_selection.py__ files shows sample usage of the entire scoring pipeline (embedding generation and scoring).
+*Please refer to the description of each argument [here](https://github.com/hkust-nlp/deita) to overwrite temporary paths in the script.* 
 
 ```
+cd preprocessor
 python deita_data_converter.py --preprocessing \
  --max_budget 100 --root ../sample_data/  \
  --write_root ../sample_data/temp \

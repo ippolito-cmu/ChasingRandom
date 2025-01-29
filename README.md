@@ -1,14 +1,14 @@
-### Introduction
+<h1 align="center">Chasing Random: Instruction Selection Strategies Fail To Generalize</h1>
 
 Official Code for [Chasing Random: Instruction Selection Strategies Fail To Generalize](https://arxiv.org/abs/2410.15225). 
-#### Abstract
-
-[A large body of work](https://arxiv.org/abs/2408.02085) has trained competitive models cost-effectively using only a fraction of high-quality instructions from existing datasets. In this work, we analyze popular selection strategies across different source datasets, selection budgets and evaluation benchmarks to demonstrate that gains through data selection generalize poorly -- often failing to consistently outperform _even random baselines_. Through an analysis of the cost expended in selection, we also conclude that data selection strategies can often exceed the cost of fine-tuning on the full dataset, yielding _only marginal—and sometimes no gains_ compared to tuning on the full dataset or a random subset.
+<h2 align="center">Abstract</h2>
 
 <p align="center">
-  <img src="./assets/teaser.png" alt="finetuning-cost">
+  <img src="./assets/teaser.png" alt="finetuning-cost" width="300">
 </p>
+**Figure 1:** Random baselines are reasonably competitive whilst incurring the least cost (b) Depending on the evaluation metric, the best strategy varies significantly with the setup (* indicates best selection strategy on the benchmark).
 
+[A large body of work](https://arxiv.org/abs/2408.02085) has trained competitive models cost-effectively using only a fraction of high-quality instructions from existing datasets. In this work, we analyze popular selection strategies across different source datasets, selection budgets and evaluation benchmarks to demonstrate that gains through data selection generalize poorly -- often failing to consistently outperform _even random baselines_. Through an analysis of the cost expended in selection, we also conclude that data selection strategies can often exceed the cost of fine-tuning on the full dataset, yielding _only marginal—and sometimes no gains_ compared to tuning on the full dataset or a random subset.
 
 
 # Table of Contents
@@ -31,7 +31,7 @@ export OPENAI_API_KEY=<YourKeyHere>
 ```
 
 ### Data 
-- You can find all the data (including specific random,strictrandom run data for reproducibility and overlap assessment) in the data.zip hosted [here](https://storage.cloud.google.com/chasing_random/data.zip). 
+- You can find all the data (including specific random,strictrandom run data for reproducibility and overlap assessment) in the data.zip hosted [here](https://storage.cloud.google.com/chasing-random/). 
 - For efficiency, we do not include the full dataset for [EVOL](https://huggingface.co/datasets/WizardLMTeam/WizardLM_evol_instruct_V2_196k), [ALPACA](https://huggingface.co/datasets/tatsu-lab/alpaca) and [DOLLY](https://huggingface.co/datasets/databricks/databricks-dolly-15k) as we source them from huggingface. 
 - We include our uniformly subsampled FLAN (our version of the full dataset) for reproducibility in this folder. To setup the environment for FLAN, use instructions provided [here](https://github.com/google-research/FLAN/). Then run the __seqio_creator.py__ (for example, with a different per task weightage). We recommend exporting the following variables to avoid exceeding Disk Quota and cloud authentication errors.  
 ```
